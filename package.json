@@ -14,5 +14,12 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jeresig/ukiyoe-scrapers/issues"
+  },
+  "dependencies": {
+    "stack-scraper": "~0.0.1",
+	"argparse": "~0.1.12",
+	"romaji-name": "~0.1.0",
+	"ukiyoe-models": "jeresig/ukiyoe-models",
+	"mongoose": "~3.6.19"
   }
 }
