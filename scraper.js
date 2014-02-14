@@ -1,3 +1,4 @@
+var _ = require("lodash");
 var mongoose = require("mongoose");
 var romajiName = require("romaji-name");
 var ArgumentParser = require("argparse").ArgumentParser;
@@ -51,8 +52,8 @@ var args = argparser.parseArgs();
 var scrapeSource = function(source, callback) {
     require("stack-scraper").run(_.extend({}, args, {
         source: source,
-        rootDataDir: "./data/",
-        scrapersDir: "./scrapers/",
+        rootDataDir: __dirname + "/../ukiyoe-search/data/",
+        scrapersDir: __dirname + "/scrapers/",
         model: mongoose.model(({
             images: "ExtractedImage",
             artists: "Bio"
@@ -60,7 +61,7 @@ var scrapeSource = function(source, callback) {
         postProcessors: require("./processing/" + args.type),
         directories: args.type === "images" ?
             ["./images/", "./thumbs/", "./scaled/"] : []
-    }));
+    }), callback);
 };
 
 var done = function(err) {
@@ -72,14 +73,20 @@ var done = function(err) {
     process.exit(0);
 };
 
-mongoose.createConnection('mongodb://localhost/extract', function() {
+mongoose.connect('mongodb://localhost/extract');
+
+mongoose.connection.on('error', function(err) {
+    console.error('Connection Error:', err)
+});
+
+mongoose.connection.once('open', function() {
     romajiName.init(function() {
         if (args.source === "*") {
-            fs.readdir("./scrapers/" + args.type, function(err, sources) {
+            fs.readdir(__dirname + "/scrapers/" + args.type, function(err, sources) {
                 async.mapLimit(sources, 1, scrapeSource, done);
             });
         } else {
-            initSite(args.source, done);
+            scrapeSource(args.source, done);
         }
     });
 });

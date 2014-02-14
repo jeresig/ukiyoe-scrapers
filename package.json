@@ -17,9 +17,10 @@
   },
   "dependencies": {
     "stack-scraper": "~0.0.1",
-	"argparse": "~0.1.12",
-	"romaji-name": "~0.1.0",
-	"ukiyoe-models": "jeresig/ukiyoe-models",
-	"mongoose": "~3.6.19"
+    "argparse": "~0.1.12",
+    "romaji-name": "~0.1.0",
+    "ukiyoe-models": "jeresig/ukiyoe-models",
+    "mongoose": "~3.6.19",
+    "lodash": "~2.4.1"
   }
 }
