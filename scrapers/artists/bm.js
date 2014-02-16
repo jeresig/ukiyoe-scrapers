@@ -30,7 +30,7 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    "name[]": '//span[@class="collectionBiographicName"]',
+                    "name": '//span[@class="collectionBiographicName"]',
 
                     dates: ['//span[@class="collectionBiographicName"]/following-sibling::text()', function(dates, data) {
                         if (!/Japanese/i.test(dates) || !/printmaker/i.test(dates)) {
