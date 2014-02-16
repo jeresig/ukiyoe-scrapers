@@ -1,6 +1,8 @@
-var nameUtils = require("./names.js");
+module.exports = function(options) {
+    var nameUtils = require("./names.js")(options);
 
-module.exports = {
-    "name": nameUtils.correctNames("name"),
-    "aliases": nameUtils.correctNames("aliases")
+    return {
+        "name": nameUtils.correctNames("name"),
+        "aliases": nameUtils.correctNames("aliases")
+    };
 };

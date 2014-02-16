@@ -1,53 +1,53 @@
 var _ = require("lodash");
-var mongoose = require("mongoose");
-var romajiName = require("romaji-name");
 
-var nameCache = {};
+module.exports = function(conf) {
+    var nameCache = {};
 
-var lookupName = function(name, options) {
-    if (name in nameCache) {
-        return nameCache[name];
-    }
-
-    var results = romajiName.parseName(name, options);
-    nameCache[name] = results;
-    return results;
-};
-
-var correctNames = function(key) {
-    return function(data, scraper, callback) {
-        if (_.isArray(data[key])) {
-            data[key].forEach(function(name, i) {
-                applyChange("Name", data[key], i,
-                    lookupName(name, scraper.nameOptions));
-            });
-        } else {
-            applyChange("Name", data, key,
-                lookupName(data[key], scraper.nameOptions));
+    var lookupName = function(name, options) {
+        if (name in nameCache) {
+            return nameCache[name];
         }
 
-        process.nextTick(function() { callback(null, data); });
+        var results = conf.romajiName.parseName(name, options);
+        nameCache[name] = results;
+        return results;
     };
-};
 
-var applyChange = function(schemaName, obj, prop, data) {
-    var value = obj[prop];
+    var correctNames = function(key) {
+        return function(data, scraper, callback) {
+            if (_.isArray(data[key])) {
+                data[key].forEach(function(name, i) {
+                    applyChange("Name", data[key], i,
+                        lookupName(name, scraper.nameOptions));
+                });
+            } else {
+                applyChange("Name", data, key,
+                    lookupName(data[key], scraper.nameOptions));
+            }
 
-    if (typeof value !== typeof data) {
-        obj[prop] = data;
-        return;
-    }
+            process.nextTick(function() { callback(null, data); });
+        };
+    };
 
-    var schema = mongoose.model(schemaName);
+    var applyChange = function(schemaName, obj, prop, data) {
+        var value = obj[prop];
 
-    for (var key in value) {
-        if (value.hasOwnProperty(key) && key in schema &&
-                data[key] !== value[key]) {
-            value[key] = data[key];
+        if (typeof value !== typeof data) {
+            obj[prop] = data;
+            return;
         }
-    }
-};
 
-module.exports = {
-    correctNames: correctNames
+        var schema = conf.mongoose.model(schemaName);
+
+        for (var key in value) {
+            if (value.hasOwnProperty(key) && key in schema &&
+                    data[key] !== value[key]) {
+                value[key] = data[key];
+            }
+        }
+    };
+
+    return {
+        correctNames: correctNames
+    };
 };

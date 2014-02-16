@@ -2,7 +2,7 @@
   "name": "ukiyoe-scrapers",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "ukiyoe.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "stack-scraper": "~0.0.0",
-    "argparse": "~0.1.12",
     "romaji-name": "~0.1.0",
     "ukiyoe-models": "jeresig/ukiyoe-models",
     "mongoose": "~3.8.7",
