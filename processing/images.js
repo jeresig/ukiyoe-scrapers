@@ -1,8 +1,8 @@
 var url = require("url");
 var _ = require("lodash");
 
-module.exports = function(options) {
-    var nameUtils = require("./names.js")(options);
+module.exports = function(ukiyoe) {
+    var nameUtils = require("./names.js")(ukiyoe);
 
     var saveImage = function(baseURL, imageURL, callback) {
         imageURL = url.resolve(baseURL, imageURL);

@@ -1,6 +1,6 @@
 var _ = require("lodash");
 
-module.exports = function(conf) {
+module.exports = function(ukiyoe) {
     var nameCache = {};
 
     var lookupName = function(name, options) {
@@ -8,7 +8,7 @@ module.exports = function(conf) {
             return nameCache[name];
         }
 
-        var results = conf.romajiName.parseName(name, options);
+        var results = ukiyoe.romajiName.parseName(name, options);
         nameCache[name] = results;
         return results;
     };
@@ -37,7 +37,7 @@ module.exports = function(conf) {
             return;
         }
 
-        var schema = conf.mongoose.model(schemaName);
+        var schema = ukiyoe.db.model(schemaName);
 
         for (var key in value) {
             if (value.hasOwnProperty(key) && key in schema &&
