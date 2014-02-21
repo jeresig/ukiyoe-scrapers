@@ -142,6 +142,8 @@ module.exports = function(site) {
                                 data.activeEndCirca = data.death_ca;
                         }
 
+                        delete data.active;
+
                         if (data.activeStart || data.activeEnd) {
                             data.active = {
                                 original: origDate,
