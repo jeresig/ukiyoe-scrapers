@@ -1,7 +1,7 @@
 var url = require("url");
 var _ = require("lodash");
 
-module.exports = function(ukiyoe) {
+module.exports = function(ukiyoe, options) {
     var nameUtils = require("./names.js")(ukiyoe);
 
     var saveImage = function(baseURL, imageURL, callback) {
@@ -10,7 +10,8 @@ module.exports = function(ukiyoe) {
         var resultHandler = function(err, md5) {
             callback(err, {
                 imageURL: imageURL,
-                imageName: md5
+                imageName: md5,
+                _id: options.source + "/" + md5
             });
         };
 

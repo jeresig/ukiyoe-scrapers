@@ -11,7 +11,7 @@ ukiyoe.init(function() {
             rootDataDir: __dirname + "/../ukiyoe-search/data/",
             scrapersDir: __dirname + "/scrapers/",
             model: ukiyoe.models[args.type],
-            postProcessors: require("./processing/" + args.type)(ukiyoe),
+            postProcessors: require("./processing/" + args.type)(ukiyoe, args),
             directories: args.type === "extractedimage" ?
                 ["./images/", "./thumbs/", "./scaled/"] : []
         };
