@@ -32,19 +32,22 @@ module.exports = function(site) {
                 extract: {
                     "name": '//span[@class="collectionBiographicName"]',
 
-                    dates: ['//span[@class="collectionBiographicName"]/following-sibling::text()', function(dates, data) {
+                    dates: ['//span[@class="collectionBiographicName"]/following-sibling::text()', function(dates, ret) {
                         if (!/Japanese/i.test(dates) || !/printmaker/i.test(dates)) {
                             return false;
                         }
 
+                        var data = {};
                         var origDate = dates = dates
                             .replace(/\n/g, " ").replace(/^\(|\)$/g, "")
-                            .replace(/.*Japanese(;\s*)?/, "").split(/;\s*/);
+                            .replace(/.*Japanese(;\s*)?/, "");
+
+                        dates = dates.split(/;\s*/);
 
                         // TODO: Keep artists that are Japanese printmakers, but have no date info
 
                         if (/Male|Female/i.test(dates[0])) {
-                            data.gender = dates.shift();
+                            ret.gender = dates.shift();
                         }
 
                         var last = dates[dates.length - 1];
@@ -145,7 +148,7 @@ module.exports = function(site) {
                         delete data.active;
 
                         if (data.activeStart || data.activeEnd) {
-                            data.active = {
+                            ret.active = {
                                 original: origDate,
                                 start: data.activeStart,
                                 start_ca: data.activeStart_ca,
@@ -153,10 +156,16 @@ module.exports = function(site) {
                                 end_ca: data.activeEnd_ca,
                                 current: data.alive
                             };
+
+                            for (var prop in data.active) {
+                                if (data.active[prop] == null) {
+                                    delete data.active[prop];
+                                }
+                            }
                         }
 
                         if (data.birth || data.death) {
-                            data.life = {
+                            ret.life = {
                                 original: origDate,
                                 start: data.birth,
                                 start_ca: data.birth_ca,
@@ -164,6 +173,12 @@ module.exports = function(site) {
                                 end_ca: data.death_ca,
                                 current: data.alive
                             };
+
+                            for (var prop in data.life) {
+                                if (data.life[prop] == null) {
+                                    delete data.life[prop];
+                                }
+                            }
                         }
 
                         return true;
