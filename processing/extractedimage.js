@@ -1,5 +1,6 @@
 var url = require("url");
 var _ = require("lodash");
+var async = require("async");
 
 module.exports = function(ukiyoe, options) {
     var nameUtils = require("./names.js")(ukiyoe);
@@ -15,12 +16,15 @@ module.exports = function(ukiyoe, options) {
             });
         };
 
+        resultHandler(null, "TEST");
+        /*
         if (imageURL.indexOf("http") === 0) {
             site.images.download(imageURL, site.dirs.base, resultHandler);
         } else {
             // Handle a file differently, skip the download
             site.images.processImage(imageURL, site.dirs.base, resultHandler);
         }
+        */
     };
 
     return {

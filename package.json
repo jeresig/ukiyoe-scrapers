@@ -20,6 +20,7 @@
     "romaji-name": "~0.1.0",
     "ukiyoe-models": "jeresig/ukiyoe-models",
     "mongoose": "~3.8.7",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "async": "^0.2.10"
   }
 }
