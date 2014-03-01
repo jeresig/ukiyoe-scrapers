@@ -1,6 +1,6 @@
 var crypto = require("crypto");
 
-module.exports = function(ukiyoe, options) {
+module.exports = function(ukiyoe, stackScraper) {
     var nameUtils = require("./names.js")(ukiyoe);
 
     return {
@@ -10,7 +10,7 @@ module.exports = function(ukiyoe, options) {
             // Set the ID
             var hash = crypto.createHash("sha1");
             hash.update(data.name.original, "utf8");
-            data._id = options.source + "/" + hash.digest("hex");
+            data._id = stackScraper.options.source + "/" + hash.digest("hex");
             process.nextTick(function() { callback(null, data); });
         }
     };

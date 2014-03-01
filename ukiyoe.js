@@ -1,7 +1,7 @@
 var ukiyoe = require("ukiyoe-models");
 
 ukiyoe.init(function() {
-    require("stack-scraper").cli(function(args) {
+    require("stack-scraper").cli(function(args, stackScraper) {
         if (!ukiyoe.models[args.type]) {
             console.error("Error: Invalid model type:", args.type);
             process.exit(1);
@@ -11,9 +11,13 @@ ukiyoe.init(function() {
             rootDataDir: __dirname + "/../ukiyoe-search/data/",
             scrapersDir: __dirname + "/scrapers/",
             model: ukiyoe.models[args.type],
-            postProcessors: require("./processing/" + args.type)(ukiyoe, args),
+            postProcessors: require("./processing/" + args.type)(ukiyoe, stackScraper),
             directories: args.type === "extractedimage" ?
-                ["./images/", "./thumbs/", "./scaled/"] : []
+                {
+                    imagesDir: "./images/",
+                    thumbsDir: "./thumbs/",
+                    scaledDir: "./scaled/"
+                } : {}
         };
     }, function(err) {
         if (err) {

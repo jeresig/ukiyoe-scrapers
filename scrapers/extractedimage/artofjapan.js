@@ -23,12 +23,16 @@ module.exports = function() {
                     publishers: sprintf(column, "Publisher"),
                     dimensions: sprintf(column, "Dimensions"),
                     condition: sprintf(column, "Condition"),
+                    price: sprintf(column, "Price"),
+                    sold: ["//font[contains(text(),'SOLD')]", function() {
+                        return true
+                    }],
                     url: function(data) {
                         // Generate a clean URL
                         return "http://www.theartofjapan.com/ArtDetail.asp?Inv=" + data._id;
                     },
                     images: function(data) {
-                        return "http://www.theartofjapan.com/Art_Images/Large/" + data._id + ".jpg";
+                        return ["http://www.theartofjapan.com/Art_Images/Large/" + data._id + ".jpg"];
                     }
                 }
             }

@@ -2,7 +2,7 @@ var url = require("url");
 var _ = require("lodash");
 var async = require("async");
 
-module.exports = function(ukiyoe, options) {
+module.exports = function(ukiyoe, stackScraper) {
     var nameUtils = require("./names.js")(ukiyoe);
 
     var saveImage = function(baseURL, imageURL, callback) {
@@ -12,19 +12,18 @@ module.exports = function(ukiyoe, options) {
             callback(err, {
                 imageURL: imageURL,
                 imageName: md5,
-                _id: options.source + "/" + md5
+                _id: stackScraper.options.source + "/" + md5
             });
         };
 
-        resultHandler(null, "TEST");
-        /*
         if (imageURL.indexOf("http") === 0) {
-            site.images.download(imageURL, site.dirs.base, resultHandler);
+            ukiyoe.images.download(imageURL,
+                stackScraper.options.sourceDataRoot, resultHandler);
         } else {
             // Handle a file differently, skip the download
-            site.images.processImage(imageURL, site.dirs.base, resultHandler);
+            ukiyoe.images.processImage(imageURL,
+                stackScraper.options.sourceDataRoot, resultHandler);
         }
-        */
     };
 
     return {
