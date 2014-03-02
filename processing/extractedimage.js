@@ -5,7 +5,7 @@ var async = require("async");
 module.exports = function(ukiyoe, stackScraper) {
     var nameUtils = require("./names.js")(ukiyoe);
 
-    var saveImage = function(baseURL, imageURL, callback) {
+    var saveImage = function(baseURL, imageURL, s3Save, callback) {
         imageURL = url.resolve(baseURL, imageURL);
 
         var resultHandler = function(err, md5) {
@@ -22,7 +22,7 @@ module.exports = function(ukiyoe, stackScraper) {
             }
 
             ukiyoe.images.download(imageURL,
-                stackScraper.options.sourceDataRoot, resultHandler);
+                stackScraper.options.sourceDataRoot, s3Save, resultHandler);
         } else {
             if (stackScraper.options.debug) {
                 console.log("Processing Image:", imageURL);
@@ -30,7 +30,7 @@ module.exports = function(ukiyoe, stackScraper) {
 
             // Handle a file differently, skip the download
             ukiyoe.images.processImage(imageURL,
-                stackScraper.options.sourceDataRoot, resultHandler);
+                stackScraper.options.sourceDataRoot, s3Save, resultHandler);
         }
     };
 
@@ -42,6 +42,7 @@ module.exports = function(ukiyoe, stackScraper) {
 
         price: function(data, scraper, callback) {
             data.forSale = true;
+            data.sold = false;
             callback(null, [data]);
         },
 
@@ -52,7 +53,7 @@ module.exports = function(ukiyoe, stackScraper) {
 
         images: function(data, scraper, callback) {
             async.map(data.images, function(image, callback) {
-                saveImage(data.url, image, callback);
+                saveImage(data.url, image, !data.noSave, callback);
             }, function(err, imageDatas) {
                 if (err) {
                     return callback(err);
