@@ -8,7 +8,7 @@ ukiyoe.init(function() {
         }
 
         return {
-            rootDataDir: __dirname + "/../ukiyoe-search/data/",
+            rootDataDir: __dirname + "/data/",
             scrapersDir: __dirname + "/scrapers/",
             model: ukiyoe.models[args.type],
             postProcessors: require("./processing/" + args.type)(ukiyoe, stackScraper),
