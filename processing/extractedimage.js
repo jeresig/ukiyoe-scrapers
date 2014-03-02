@@ -53,7 +53,7 @@ module.exports = function(ukiyoe, stackScraper) {
 
         images: function(data, scraper, callback) {
             async.map(data.images, function(image, callback) {
-                saveImage(data.url, image, !data.noSave, callback);
+                saveImage(data.url, image, !stackScraper.options.noSave, callback);
             }, function(err, imageDatas) {
                 if (err) {
                     return callback(err);

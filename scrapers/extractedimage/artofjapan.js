@@ -1,10 +1,10 @@
-var sprintf = require("util").format;
-
 var column = "//td[contains(.//text(),'%s')]/following-sibling::td[2]/span/text()[1]";
 
 // http://www.theartofjapan.com/ArtDetail.asp?Inv=rd0110024
 
-module.exports = function() {
+module.exports = function(options, casper) {
+    var sprintf = casper.format;
+
     return {
         scrape: [
             {
