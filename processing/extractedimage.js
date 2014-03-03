@@ -4,6 +4,7 @@ var async = require("async");
 
 module.exports = function(ukiyoe, stackScraper) {
     var nameUtils = require("./names.js")(ukiyoe);
+    var dateUtils = require("./dates.js")(ukiyoe);
 
     var saveImage = function(baseURL, imageURL, s3Save, callback) {
         imageURL = url.resolve(baseURL, imageURL);
@@ -46,6 +47,9 @@ module.exports = function(ukiyoe, stackScraper) {
             callback(null, [data]);
         },
 
+        dateCreated: dateUtils.correctDates("dateCreated"),
+        datePublished: dateUtils.correctDates("datePublished"),
+
         artists: nameUtils.correctNames("artists"),
         publisher: nameUtils.correctNames("publisher"),
         carver: nameUtils.correctNames("publisher"),
@@ -53,7 +57,8 @@ module.exports = function(ukiyoe, stackScraper) {
 
         images: function(data, scraper, callback) {
             async.map(data.images, function(image, callback) {
-                saveImage(data.url, image, !stackScraper.options.noSave, callback);
+                saveImage(data.url, image, !stackScraper.options.noSave,
+                    callback);
             }, function(err, imageDatas) {
                 if (err) {
                     return callback(err);
