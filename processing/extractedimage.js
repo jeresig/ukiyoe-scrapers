@@ -10,6 +10,10 @@ module.exports = function(ukiyoe, stackScraper) {
         imageURL = url.resolve(baseURL, imageURL);
 
         var resultHandler = function(err, md5) {
+            if (stackScraper.options.debug) {
+                console.log("Image Processed:", imageURL, md5);
+            }
+
             callback(err, {
                 imageURL: imageURL,
                 imageName: md5,
@@ -51,8 +55,8 @@ module.exports = function(ukiyoe, stackScraper) {
         datePublished: dateUtils.correctDates("datePublished"),
 
         artists: nameUtils.correctNames("artists"),
-        publisher: nameUtils.correctNames("publisher"),
-        carver: nameUtils.correctNames("publisher"),
+        publishers: nameUtils.correctNames("publishers"),
+        carvers: nameUtils.correctNames("carvers"),
         depicted: nameUtils.correctNames("depicted"),
 
         images: function(data, scraper, callback) {
