@@ -11,6 +11,7 @@ ukiyoe.init(function() {
             rootDataDir: __dirname + "/data/",
             scrapersDir: __dirname + "/scrapers/",
             model: ukiyoe.models[args.type],
+            logModel: ukiyoe.models.scrapelog,
             postProcessors: require("./processing/" + args.type)(ukiyoe, stackScraper),
             directories: args.type === "extractedimage" ?
                 {
