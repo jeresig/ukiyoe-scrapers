@@ -68,6 +68,8 @@ module.exports = function(ukiyoe, stackScraper) {
                     return callback(err);
                 }
 
+                delete data.images;
+
                 var related = _.pluck(imageDatas, "imageName");
 
                 callback(null, imageDatas.map(function(imageData) {
@@ -78,6 +80,9 @@ module.exports = function(ukiyoe, stackScraper) {
                     }
 
                     data.related = _.without(related, imageData.imageName);
+                    data.related = data.related.map(function(imageName) {
+                        return stackScraper.options.source + "/" + imageName;
+                    });
 
                     return data;
                 }));
