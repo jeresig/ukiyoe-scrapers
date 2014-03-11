@@ -64,7 +64,7 @@ module.exports = function(ukiyoe, stackScraper) {
         depicted: nameUtils.correctNames("depicted"),
 
         images: function(data, scraper, callback) {
-            async.map(data.images, function(image, callback) {
+            async.mapLimit(data.images, 1, function(image, callback) {
                 saveImage(data.url, image, !stackScraper.options.noSave,
                     callback);
             }, function(err, imageDatas) {

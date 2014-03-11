@@ -20,13 +20,15 @@ module.exports = function(options, casper) {
                     description: "//*[@id='descript-text']",
                     dateCreated: "//*[@id='age-value']",
                     dimensions: "//*[@id='size-value']",
-                    "images[]": ["//span[@id='altviews']/a[./img[contains(@class,'product_photo')]]/@href", function(val) {
+                    "images[]": ["//a[./img[contains(@class,'product_photo')]]/@href", function(val) {
                         return "http:" + val.replace(/\?.*$/, "");
                     }],
                     "_ids[]": function(data) {
-                        return data.images.map(function(url) {
-                            return /([^\/]+).jpg/.exec(url)[1];
-                        });
+                        if (data.images) {
+                            return data.images.map(function(url) {
+                                return /([^\/]+).jpg/.exec(url)[1];
+                            });
+                        }
                     }
                 }
             }
