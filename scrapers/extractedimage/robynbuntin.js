@@ -20,7 +20,7 @@ module.exports = function(options, casper) {
                     description: "//*[@id='descript-text']",
                     dateCreated: "//*[@id='age-value']",
                     dimensions: "//*[@id='size-value']",
-                    "images[]": ["//img[contains(@class,'product_photo')]/@src", function(val) {
+                    "images[]": ["//span[@id='altviews']/a[./img[contains(@class,'product_photo')]]/@href", function(val) {
                         return "http:" + val.replace(/\?.*$/, "");
                     }],
                     "_ids[]": function(data) {

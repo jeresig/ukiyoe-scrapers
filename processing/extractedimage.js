@@ -78,29 +78,31 @@ module.exports = function(ukiyoe, stackScraper) {
                 var source = stackScraper.options.source;
 
                 callback(null, imageDatas.map(function(imageData) {
+                    var clone = _.clone(data);
+
                     for (var prop in imageData) {
-                        if (!(prop in data)) {
-                            data[prop] = imageData[prop];
+                        if (!(prop in clone)) {
+                            clone[prop] = imageData[prop];
                         }
                     }
 
                     var getID = function(imageName) {
-                        if (data._ids) {
+                        if (clone._ids) {
                             var pos = related.indexOf(imageName);
                             return pos > -1 ?
-                                source + "/" + data._ids[pos] :
+                                source + "/" + clone._ids[pos] :
                                 "";
                         } else {
                             return source + "/" + imageName;
                         }
                     };
 
-                    data._id = getID(imageData.imageName);
+                    clone._id = getID(imageData.imageName);
 
-                    data.related = _.without(related, imageData.imageName);
-                    data.related = data.related.map(getID);
+                    clone.related = _.without(related, imageData.imageName);
+                    clone.related = clone.related.map(getID);
 
-                    return data;
+                    return clone;
                 }));
             });
         }
