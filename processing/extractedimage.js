@@ -75,6 +75,7 @@ module.exports = function(ukiyoe, stackScraper) {
                 delete data.images;
 
                 var related = _.pluck(imageDatas, "imageName");
+                var source = stackScraper.options.source;
 
                 callback(null, imageDatas.map(function(imageData) {
                     for (var prop in imageData) {
@@ -83,10 +84,21 @@ module.exports = function(ukiyoe, stackScraper) {
                         }
                     }
 
+                    var getID = function(imageName) {
+                        if (data._ids) {
+                            var pos = related.indexOf(imageName);
+                            return pos > -1 ?
+                                source + "/" + data._ids[pos] :
+                                "";
+                        } else {
+                            return source + "/" + imageName;
+                        }
+                    };
+
+                    data._id = getID(imageData.imageName);
+
                     data.related = _.without(related, imageData.imageName);
-                    data.related = data.related.map(function(imageName) {
-                        return stackScraper.options.source + "/" + imageName;
-                    });
+                    data.related = data.related.map(getID);
 
                     return data;
                 }));

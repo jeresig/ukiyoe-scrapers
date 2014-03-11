@@ -12,15 +12,15 @@ module.exports = function(options, casper) {
             },
             {
                 extract: {
-                    title: "//table[not(@width)][not(.//img)]//tr[2]",
-                    description: "//table[not(@width)][not(.//img)]//tr[3]",
+                    title: "//form//table[not(@width)]//tr[2]",
+                    description: "//form//table[not(@width)]//tr[3]",
                     dateCreated: function(data) {
                         var m = /(\d{4})/.exec(data.description);
                         return m ? m[0] : "";
                     },
                     artists: "//span[@class='redtext']",
-                    dimensions: "//table[not(@width)][not(.//img)]//tr[4]",
-                    price: ["//table[not(@width)][not(.//img)]//tr[last()]", function(val, data) {
+                    dimensions: "//form//table[not(@width)]//tr[4]",
+                    price: ["//form//table[not(@width)]//span[contains(text(),'price:')]", function(val, data) {
                         if (/sold/i.test(val)) {
                             data.sold = true;
                             return "";
@@ -28,7 +28,7 @@ module.exports = function(options, casper) {
 
                         return val.replace(/price:\s+/i, "");
                     }],
-                    images: ["//img[contains(@src,'artistimages')]/@src", function(val, data) {
+                    images: ["//img[contains(@src,'artistimages')][not(contains(@src,'seal'))]/@src", function(val, data) {
                         if (/([^\/]+).jpg/.test(val)) {
                             data._id = RegExp.$1;
                             return ["http://www.scholten-japanese-art.com/artistimages/" + RegExp.$1 + ".jpg"];

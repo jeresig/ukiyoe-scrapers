@@ -22,7 +22,12 @@ module.exports = function(options, casper) {
                     dimensions: "//*[@id='size-value']",
                     "images[]": ["//img[contains(@class,'product_photo')]/@src", function(val) {
                         return "http:" + val.replace(/\?.*$/, "");
-                    }]
+                    }],
+                    "_ids[]": function(data) {
+                        return data.images.map(function(url) {
+                            return /([^\/]+).jpg/.exec(url)[1];
+                        });
+                    }
                 }
             }
         ]
