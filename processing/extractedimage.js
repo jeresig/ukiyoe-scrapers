@@ -11,7 +11,11 @@ module.exports = function(ukiyoe, stackScraper) {
 
         var resultHandler = function(err, md5) {
             if (stackScraper.options.debug) {
-                console.log("Image Processed:", imageURL, md5);
+                if (err) {
+                    console.error("Error processing image.");
+                } else {
+                    console.log("Image Processed:", imageURL, md5);
+                }
             }
 
             callback(err, {
