@@ -27,7 +27,12 @@ module.exports = function(options, casper) {
 
                         return val.replace(/price:\s*/i, "");
                     }],
-                    images: "//img[@class='largeimage1']"
+                    "images[]": "//img[@class='largeimage1']/@src",
+                    _id: function(data) {
+                        if (data.images && /([^\/]+).jpg/.test(data.images[0])) {
+                            return RegExp.$1;
+                        }
+                    }
                 }
             }
         ]
