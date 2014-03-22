@@ -50,8 +50,10 @@ module.exports = function(ukiyoe, stackScraper) {
         },
 
         price: function(data, scraper, callback) {
-            data.forSale = true;
-            data.sold = false;
+            if (data.sold === undefined) {
+                data.forSale = true;
+                data.sold = false;
+            }
             callback(null, [data]);
         },
 
