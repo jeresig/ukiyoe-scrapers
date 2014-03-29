@@ -1,10 +1,35 @@
-exports.extract = {
-	artist: "//div[@class='narrow-column']//h3 || //label[contains(text(), 'Artist')]/following-sibling::span[1]",
-	title: "//div[@class='narrow-column']//h2 || //label[contains(text(), 'Title/Object Name')]/following-sibling::text()[1]",
-	date: "//dt[contains(text(), 'Date')]/following-sibling::dd[1] || //label[contains(text(), 'Date')]/following-sibling::text()[1]",
-	source_image: '//img[contains(@src,"web-large")]/@src || //link[@rel="image_src"]/@href'
-};
+// http://www.metmuseum.org/Collections/search-the-collections/37112
 
-exports.genURL = function( id ) {
-	return "http://www.metmuseum.org/Collections/search-the-collections/" + id;
+module.exports = function(options, casper) {
+    return {
+        scrape: [
+            {
+                start: "http://www.metmuseum.org/collections/search-the-collections?where=Japan&ft=woodblock&ao=on&noqs=true&rpp=60&pg=%s",
+                next: "(//a[img[contains(@title,'next')]])[1]",
+                visit: '//div[@class="image-container"]//a[contains(@href,"search-the-collections")][img]'
+            },
+            {
+                extract: {
+                	artists: "//dt[contains(.,'Who')]/following-sibling::dd[1]//li/a",
+                	title: "//div[@class='narrow-column']//h2",
+                	dateCreated: "//dt[contains(text(), 'Date')]/following-sibling::dd[1]",
+                    dimensions: "//dt[contains(text(), 'Dimensions')]/following-sibling::dd[1]",
+                    description: "//li[a[contains(.,'Description')]]//p",
+                	"images[]": ["//img[contains(@src,'web-additional')]/@src || //img[contains(@src,'web-large')]/@src", function(val) {
+                	    return val.replace(/web-(?:additional|large)/, "original");
+                	}],
+                    "_ids[]": function(data) {
+                        if (data.images) {
+                            return data.images.map(function(val) {
+                                return /([^\/]+).jpg$/.exec(val)[1];
+                            });
+                        }
+                    },
+                    url: function(data) {
+                        return data.url.replace(/\?.*$/, "");
+                    }
+                }
+            }
+        ]
+    };
 };
