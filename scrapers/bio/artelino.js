@@ -247,6 +247,7 @@ module.exports = function(site) {
                     url: function(data) {
                         if (!data.url && data.savedPage) {
                             if (/(\d+).html/.test(data.savedPage)) {
+                                data._id = RegExp.$1;
                                 return "http://www.artelino.com/forum/artists.asp?art=" + RegExp.$1;
                             }
                         }

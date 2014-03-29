@@ -128,6 +128,7 @@ module.exports = function(site) {
                     url: function(data) {
                         if (!data.url && data.savedPage) {
                             if (/(\d+).html/.test(data.savedPage)) {
+                                data._id = RegExp.$1;
                                 return "http://www.floatingworld.com/scripts/ref_ArtistDetail.asp?art_ID=" + RegExp.$1;
                             }
                         }

@@ -121,6 +121,7 @@ module.exports = function(site) {
                     url: function(data) {
                         if (!data.url && data.savedPage) {
                             if (/([^\/]+).html/.test(data.savedPage)) {
+                                data._id = RegExp.$1;
                                 return "http://osakaprints.com/content/information/artist_bios/biographies/bio_" + RegExp.$1 + ".htm";
                             }
                         }

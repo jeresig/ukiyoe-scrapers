@@ -106,6 +106,7 @@ module.exports = function(site) {
                     url: function(data) {
                         if (!data.url && data.savedPage) {
                             if (/([^\/]+).html/.test(data.savedPage)) {
+                                data._id = RegExp.$1;
                                 return "http://en.wikipedia.org/wiki/" + RegExp.$1;
                             }
                         }

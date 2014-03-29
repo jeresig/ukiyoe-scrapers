@@ -197,6 +197,7 @@ module.exports = function(site) {
                     url: function(data) {
                         if (!data.url && data.savedPage) {
                             if (/(\d+).html/.test(data.savedPage)) {
+                                data._id = RegExp.$1;
                                 return "http://www.britishmuseum.org/research/search_the_collection_database/term_details.aspx?bioId=" + RegExp.$1;
                             }
                         }

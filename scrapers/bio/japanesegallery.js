@@ -131,7 +131,12 @@ module.exports = function(site) {
 
                     url: [".//a/@href", function(url) {
                         return "http://www.japanesegallery.co.uk/" + url;
-                    }]
+                    }],
+
+                    _id: function(data) {
+                        return data.name.toLowerCase().replace(/[^a-z ]/i, "")
+                            .trim().replace(/\s+/g, "-");
+                    }
                 }
             }
         ],

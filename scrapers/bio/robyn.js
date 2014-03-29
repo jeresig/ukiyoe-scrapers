@@ -102,6 +102,7 @@ module.exports = function(site) {
                     url: function(data) {
                         if (!data.url && data.savedPage) {
                             if (/(\d+).html/.test(data.savedPage)) {
+                                data._id = RegExp.$1;
                                 return "http://www.robinbuntin.com/artists/artist.aspx?ArtistID=" + RegExp.$1;
                             }
                         }

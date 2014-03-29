@@ -136,6 +136,7 @@ module.exports = function(site) {
                     url: function(data) {
                         if (!data.url && data.savedPage) {
                             if (/([^\/]+).html/.test(data.savedPage)) {
+                                data._id = RegExp.$1;
                                 return "http://www.myjapanesehanga.com/home/artists/" + RegExp.$1;
                             }
                         }
