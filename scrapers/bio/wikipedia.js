@@ -36,7 +36,8 @@ module.exports = function(site) {
                         data.name += " " + kanji;
                     }],
 
-                    bio: ["//div[@id='mw-content-text']/p", function(bio, data) {
+                    bio: ["//div[@id='mw-content-text']/p", function(bio, origData) {
+                        var data = {};
                         var dates = bio;
                         var origDate = dates;
 
@@ -66,7 +67,7 @@ module.exports = function(site) {
                         }
 
                         if (data.activeStart || data.activeEnd) {
-                            data.active = {
+                            origData.active = {
                                 original: origDate,
                                 start: data.activeStart,
                                 start_ca: data.activeStart_ca,
@@ -77,7 +78,7 @@ module.exports = function(site) {
                         }
 
                         if (data.birth || data.death) {
-                            data.life = {
+                            origData.life = {
                                 original: origDate,
                                 start: data.birth,
                                 start_ca: data.birth_ca,
@@ -87,16 +88,16 @@ module.exports = function(site) {
                             };
                         }
 
-                        data.locations = [];
+                        origData.locations = [];
 
                         if (/Osaka/.test(bio)) {
-                            data.locations.push("Osaka");
+                            origData.locations.push("Osaka");
                         }
                         if (/Kyoto/.test(bio)) {
-                            data.locations.push("Kyoto");
+                            origData.locations.push("Kyoto");
                         }
                         if (/Edo/.test(bio)) {
-                            data.locations.push("Edo");
+                            origData.locations.push("Edo");
                         }
 
                         return bio.replace(/\[\d+\]/g, "")

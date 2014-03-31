@@ -30,7 +30,8 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: ['//h2[@class="subtitle"]', function(name, data) {
+                    name: ['//h2[@class="subtitle"]', function(name, origData) {
+                        var data = {};
                         var origName = name = name.replace(/\s*\|.*$/, "");
 
                         var parts = name.split(/\s*,\s*/);
@@ -67,7 +68,7 @@ module.exports = function(site) {
                             correctDate(data);
 
                             if (data.activeStart || data.activeEnd) {
-                                data.active = {
+                                origData.active = {
                                     original: origDate,
                                     start: data.activeStart,
                                     start_ca: data.activeStart_ca,
@@ -78,7 +79,7 @@ module.exports = function(site) {
                             }
 
                             if (data.birth || data.death) {
-                                data.life = {
+                                origData.life = {
                                     original: origDate,
                                     start: data.birth,
                                     start_ca: data.birth_ca,

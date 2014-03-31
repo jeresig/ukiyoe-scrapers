@@ -36,7 +36,8 @@ module.exports = function(site) {
                             .replace(/\([^\)]+\)/g, "");
                     }],
 
-                    dates: ["//font[@size='5']/following-sibling::font[@size='2']", function(dates, data) {
+                    dates: ["//font[@size='5']/following-sibling::font[@size='2']", function(dates, origData) {
+                        var data = {};
                         var origDate = dates;
                         var parts = dates.replace(/\(\s*|\s*\)/g, "").split(/\s*-\s*/);
                         var start = parts[0];
@@ -70,7 +71,7 @@ module.exports = function(site) {
                         correctDate(data);
 
                         if (data.activeStart || data.activeEnd) {
-                            data.active = {
+                            origData.active = {
                                 original: origDate,
                                 start: data.activeStart,
                                 start_ca: data.activeStart_ca,
@@ -81,7 +82,7 @@ module.exports = function(site) {
                         }
 
                         if (data.birth || data.death) {
-                            data.life = {
+                            origData.life = {
                                 original: origDate,
                                 start: data.birth,
                                 start_ca: data.birth_ca,
@@ -90,8 +91,6 @@ module.exports = function(site) {
                                 current: data.alive
                             };
                         }
-
-                        return null;
                     }],
 
                     bio: ["//td/font[@size='2'][count(preceding-sibling::*)=0]", function(bio, data) {

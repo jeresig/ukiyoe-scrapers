@@ -12,13 +12,15 @@ ukiyoe.init(function() {
             scrapersDir: __dirname + "/scrapers/",
             model: ukiyoe.models[args.type],
             logModel: ukiyoe.models.scrapelog,
-            postProcessors: require("./processing/" + args.type)(ukiyoe, stackScraper),
+            postProcessors: require("./processing/" + args.type)(
+                ukiyoe, stackScraper),
             directories: args.type === "extractedimage" ?
                 {
                     imagesDir: "./images/",
                     thumbsDir: "./thumbs/",
                     scaledDir: "./scaled/"
-                } : {}
+                } : {},
+            romajiName: ukiyoe.romajiName
         };
     }, function(err) {
         if (err) {

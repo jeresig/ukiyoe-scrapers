@@ -1,5 +1,6 @@
 module.exports = function(site) {
-    var correctDate = done = function(data) {
+    var correctDate = done = function(origDates, origData) {
+        var data = {dates: origDates};
         var origDate = data.dates;
 
         // Clean up text at the end of the line
@@ -200,7 +201,7 @@ module.exports = function(site) {
         }
 
         if (data.activeStart || data.activeEnd) {
-            data.active = {
+            origData.active = {
                 original: origDate,
                 start: data.activeStart,
                 start_ca: data.activeStart_ca,
@@ -211,7 +212,7 @@ module.exports = function(site) {
         }
 
         if (data.birth || data.death) {
-            data.life = {
+            origData.life = {
                 original: origDate,
                 start: data.birth,
                 start_ca: data.birth_ca,
@@ -236,10 +237,11 @@ module.exports = function(site) {
                             .replace(/\(.*?\)/, "");
                     }],
 
-                    dates: ['//h2[@class="caption2"]', function(name) {
-                        return name.replace(/&nbsp;/g, " ")
+                    dates: ['//h2[@class="caption2"]', function(name, data) {
+                        var dates = name.replace(/&nbsp;/g, " ")
                             .replace(/\n/g, " ").split(/\s*-\s*/)
                             .slice(1).join("-");
+                        correctDate(dates, data);
                     }],
 
                     bio: '//div[@class="left-image"]/following-sibling::p[1][a]/text()',
@@ -258,10 +260,6 @@ module.exports = function(site) {
         ],
 
         accept: function(data) {
-            if (data.name && data.dates) {
-                correctDate(data);
-            }
-
             return !!data.name && !/Chin/i.test(data.bio) &&
                 !/[xX]/.test(data.name);
         }

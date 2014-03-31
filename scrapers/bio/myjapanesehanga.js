@@ -30,7 +30,8 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: ["//span[@id='sites-page-title']", function(name, data) {
+                    name: ["//span[@id='sites-page-title']", function(name, origData) {
+                        var data = {};
                         name = name.replace(/\n/g, " ");
 
                         if (/Unread|Unknown/i.test(name)) {
@@ -102,7 +103,7 @@ module.exports = function(site) {
                             }
 
                             if (data.activeStart || data.activeEnd) {
-                                data.active = {
+                                origData.active = {
                                     original: origDate,
                                     start: data.activeStart,
                                     start_ca: data.activeStart_ca,
@@ -113,7 +114,7 @@ module.exports = function(site) {
                             }
 
                             if (data.birth || data.death) {
-                                data.life = {
+                                origData.life = {
                                     original: origDate,
                                     start: data.birth,
                                     start_ca: data.birth_ca,
@@ -128,7 +129,11 @@ module.exports = function(site) {
                     }],
 
                     bio: ["//div[contains(@class, 'sites-tile-name-content-1')]", function(bio, data) {
-                        site.romajiName.extractKanji(bio, data);
+                        var kanji = {};
+                        site.romajiName.extractKanji(bio, kanji);
+                        if (kanji.kanji) {
+                            data.name += " " + kanji.kanji;
+                        }
 
                         return bio;
                     }],

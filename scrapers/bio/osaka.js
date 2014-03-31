@@ -54,7 +54,8 @@ module.exports = function(site) {
                         return aliases;
                     }],
 
-                    dates: ["//td[contains(./div/span,'Dates:')]/following-sibling::td", function(dates, data) {
+                    dates: ["//td[contains(./div/span,'Dates:')]/following-sibling::td", function(dates, origData) {
+                        var data = {};
                         var origDate = dates;
 
                         dates.split(/;\s*/).forEach(function(date) {
@@ -94,7 +95,7 @@ module.exports = function(site) {
                         });
 
                         if (data.activeStart || data.activeEnd) {
-                            data.active = {
+                            origData.active = {
                                 original: origDate,
                                 start: data.activeStart,
                                 start_ca: data.activeStart_ca,
@@ -105,7 +106,7 @@ module.exports = function(site) {
                         }
 
                         if (data.birth || data.death) {
-                            data.life = {
+                            origData.life = {
                                 original: origDate,
                                 start: data.birth,
                                 start_ca: data.birth_ca,

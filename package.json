@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "stack-scraper": "~0.1.0",
-    "romaji-name": "~0.1.1",
     "ukiyoe-models": "~0.0.1",
     "mongoose": "~3.8.7",
     "lodash": "~2.4.1",

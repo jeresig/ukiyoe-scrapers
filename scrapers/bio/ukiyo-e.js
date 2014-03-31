@@ -31,7 +31,8 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: ["//p[@class='title'][contains(text(), 'Biography ')]", function(name, data) {
+                    name: ["//p[@class='title'][contains(text(), 'Biography ')]", function(name, origData) {
+                        var data = {};
                         /Biography (.*?) \((.*?)\)$/.test(name);
                         name = RegExp.$1;
                         var dates = RegExp.$2;
@@ -69,7 +70,7 @@ module.exports = function(site) {
                         correctDate(data);
 
                         if (data.activeStart || data.activeEnd) {
-                            data.active = {
+                            origData.active = {
                                 original: origDate,
                                 start: data.activeStart,
                                 start_ca: data.activeStart_ca,
@@ -80,7 +81,7 @@ module.exports = function(site) {
                         }
 
                         if (data.birth || data.death) {
-                            data.life = {
+                            origData.life = {
                                 original: origDate,
                                 start: data.birth,
                                 start_ca: data.birth_ca,
