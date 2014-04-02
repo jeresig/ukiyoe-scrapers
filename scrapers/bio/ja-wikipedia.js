@@ -32,7 +32,10 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: "//div[@id='mw-content-text']//p[b][1]/b[1]",
+                    name: ["//div[@id='mw-content-text']//p[b][1]/b[1]", function(val, data) {
+                        data._id = val;
+                        return val;
+                    }],
 
                     dates: ["//div[@id='mw-content-text']/p[1]", function(bio, origData) {
                         if (/[\（\(]\s*([\u3041-\u3096\u30A0-\u30FF ]+)/.test(bio)) {
@@ -99,7 +102,7 @@ module.exports = function(site) {
                     url: function(data) {
                         if (!data.url && data.savedPage) {
                             if (/([^\/]+).html/.test(data.savedPage)) {
-                                data._id = RegExp.$1;
+                                //data._id = decodeURIComponent(RegExp.$1);
                                 return "http://ja.wikipedia.org/wiki/" + RegExp.$1;
                             }
                         }
