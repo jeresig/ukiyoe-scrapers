@@ -2,6 +2,7 @@ var crypto = require("crypto");
 
 module.exports = function(ukiyoe, stackScraper) {
     var nameUtils = require("./names.js")(ukiyoe);
+    var dateUtils = require("./dates.js")(ukiyoe);
 
     return {
         _id: function(data, scraper, callback) {
@@ -20,6 +21,8 @@ module.exports = function(ukiyoe, stackScraper) {
                 callback(err, data);
             });
         },
-        aliases: nameUtils.correctNames("aliases")
+        aliases: nameUtils.correctNames("aliases"),
+        life: dateUtils.correctDates("life"),
+        active: dateUtils.correctDates("active")
     };
 };

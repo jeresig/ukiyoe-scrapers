@@ -1,6 +1,6 @@
 var hepburn = require("hepburn");
 
-module.exports = function(site) {
+module.exports = function(options) {
     return {
         files: "asahi/kato/yoshio/aiueo-zenesi/*/*.html",
         scrape: [
@@ -11,21 +11,25 @@ module.exports = function(site) {
 
                         if (/([\u3041-\u3096\u30A0-\u30FF\s]+)/.test(val)) {
                             var kana = RegExp.$1;
-                            val = val.replace(kana, hepburn.fromKana(kana));
-                        }
+                            var romaji = hepburn.fromKana(kana);
 
-                        console.log(val)
+                            // It's written backwards!
+                            romaji = romaji.trim().split(/\s+/)
+                                .reverse().join(" ");
+
+                            // Handle generations
+                            var gen = {};
+                            if (options.romajiName.extractGeneration(val, gen) && gen.generation) {
+                                romaji += " " + gen.generation;
+                            }
+
+                            val = val.replace(kana, romaji + " ");
+                        }
 
                         return val;
                     }],
 
-                    date: ["(//td[@width='480']/font[@color='blue'])[2]", function(val, data) {
-                        console.log(val)
-                        var match = /([０１２３４５６７８９0-9]{4}|[？?])[\s\S]*?～[\s\S]*?([０１２３４５６７８９0-9]{4}|[？?])/.exec(val);
-                        if (match) {
-                            console.log(match[1], match[2]);
-                        }
-                    }],
+                    life: "(//td[@width='480']/font[@color='blue'])[2]",
 
                     url: function(data) {
                         if (!data.url && data.savedFile) {
@@ -41,7 +45,7 @@ module.exports = function(site) {
         ],
 
         accept: function(data) {
-            return false;
+            return !!data.name;
         }
     };
 };
