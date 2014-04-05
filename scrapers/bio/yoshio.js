@@ -9,7 +9,7 @@ module.exports = function(options) {
                     name: ["(//td[@width='480']/font[@color='blue'])[1]", function(val, data) {
                         val = val.replace(/☆\s*/g, "");
 
-                        if (/([\u3041-\u3096\u30A0-\u30FF\s]+)/.test(val)) {
+                        if (/([\u3041-\u3096\u30A0-\u30FF\s]+)\s/.test(val)) {
                             var kana = RegExp.$1;
                             var romaji = hepburn.fromKana(kana);
 
