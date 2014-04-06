@@ -11,18 +11,20 @@ module.exports = function(options) {
                 extract: {
                     name: ["(//td[@width='480']/font[@color='blue'])[1]", function(val, data) {
                         val = val.replace(/☆\s*/g, "");
+                        val = options.romajiName.stripParens(val);
 
-                        if (/([\u3041-\u3096\u30A0-\u30FF\s]+)\s/.test(val)) {
-                            var kana = RegExp.$1;
+                        if (/([\u3041-\u3096\u30A0-\u30FF（）\s]+)\s/.test(val)) {
+                            var kana = RegExp.$1.trim();
                             var romaji = hepburn.fromKana(kana);
 
                             // It's written backwards!
-                            romaji = romaji.trim().split(/\s+/)
-                                .reverse().join(" ");
+                            romaji = options.romajiName.flipName(romaji);
 
                             // Handle generations
                             var gen = {};
-                            if (options.romajiName.extractGeneration(val, gen) && gen.generation) {
+                            options.romajiName.extractGeneration(val, gen);
+
+                            if (gen && gen.generation) {
                                 romaji += " " + gen.generation;
                             }
 
