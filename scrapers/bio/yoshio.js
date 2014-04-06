@@ -2,7 +2,10 @@ var hepburn = require("hepburn");
 
 module.exports = function(options) {
     return {
-        files: "asahi/kato/yoshio/aiueo-zenesi/*/*.html",
+        files: [
+            "asahi/kato/yoshio/aiueo-zenesi/*/*.html",
+            "asahi/kato/yoshio/kobetuesi/*.html"
+        ],
         scrape: [
             {
                 extract: {
@@ -35,6 +38,9 @@ module.exports = function(options) {
                         if (!data.url && data.savedFile) {
                             if (/([^\/]+).html/.test(data.savedFile)) {
                                 data._id = RegExp.$1;
+                                if (/kobetuesi/.test(data.savedFile)) {
+                                    data._id = "kobetuesi-" + data._id;
+                                }
                                 return "http://www.ne.jp/" + data.savedFile;
                             }
                         }
