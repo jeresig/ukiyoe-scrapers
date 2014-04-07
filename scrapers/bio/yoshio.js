@@ -29,9 +29,11 @@ module.exports = function(options) {
                             }
 
                             val = val.replace(kana, romaji + " ");
+
+                            return val;
                         }
 
-                        return val;
+                        // Don't return anything if there's no kana name
                     }],
 
                     life: "(//td[@width='480']/font[@color='blue'])[2]",
