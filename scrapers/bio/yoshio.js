@@ -11,6 +11,7 @@ module.exports = function(options) {
                 extract: {
                     name: ["(//td[@width='480']/font[@color='blue'])[1]", function(val, data) {
                         val = val.replace(/☆\s*/g, "");
+                        val = val.replace(/、/g, "");
                         val = options.romajiName.stripParens(val);
 
                         if (/([\u3041-\u3096\u30A0-\u30FF（）\s]+)\s/.test(val)) {
@@ -30,7 +31,7 @@ module.exports = function(options) {
 
                             val = val.replace(kana, romaji + " ");
 
-                            return val;
+                            return options.romajiName.parseName(val);
                         }
 
                         // Don't return anything if there's no kana name
@@ -55,7 +56,7 @@ module.exports = function(options) {
         ],
 
         accept: function(data) {
-            return !!data.name;
+            return !!data.name && !!data.name.name;
         }
     };
 };
