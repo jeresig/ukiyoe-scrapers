@@ -19,7 +19,7 @@ module.exports = function(ukiyoe) {
                 data[key].forEach(function(name, i) {
                     data[key][i] = lookupName(name, scraper.nameOptions);
                 });
-            } else {
+            } else if (typeof data[key] === "string") {
                 data[key] = lookupName(data[key], scraper.nameOptions);
             }
 

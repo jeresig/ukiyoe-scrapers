@@ -21,7 +21,7 @@ module.exports = function(ukiyoe) {
                 data[key].forEach(function(date, i) {
                     data[key][i] = validDate(yr.parse(date));
                 });
-            } else {
+            } else if (typeof data[key] === "string") {
                 data[key] = validDate(yr.parse(data[key]));
             }
 
