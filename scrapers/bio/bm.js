@@ -78,7 +78,9 @@ module.exports = function(site) {
 
                         // Format: born; active; died
                         if (dates.length === 1) {
-                            if (/((?:ca?.\s*)?)(\d{4})(s?)(?:\s*-\s*((?:ca?.\s*)?)(\d{4})(s?))?/.test(dates[0])) {
+                            if (/^\d+$/.test(dates[0]) && !data.active) {
+                                data.death = dates[0];
+                            } else if (/((?:ca?.\s*)?)(\d{4})(s?)(?:\s*-\s*((?:ca?.\s*)?)(\d{4})(s?))?/.test(dates[0])) {
                                 data.start = RegExp.$2;
 
                                 if (RegExp.$1 || RegExp.$3) {
