@@ -9,8 +9,11 @@ module.exports = function(options, casper) {
             {
                 extract: {
                     title: "//title",
-                    date: "//div[contains(@class,'field-name-field-dated')]",
-                    artists: "//div[contains(@class,'field-name-object-artists')]",
+                    dateCreated: "//div[contains(@class,'field-name-field-dated')]",
+                    artists: ["//div[contains(@class,'field-name-object-artists')]", function(name) {
+                        return name.replace(/Artist:\s*/, "")
+                            .replace(/, Japanese.*$/, "");
+                    }],
                     dimensions: "//div[contains(@class,'field-name-field-dimensions')]",
                     "images[]": "//a[@class='download']/@href",
                     "_ids[]": function(data) {
