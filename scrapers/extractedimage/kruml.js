@@ -1,8 +1,6 @@
 exports.extract = {
-	artist: ["//h1/a", function(text) {
-		return text.replace(/\(.*?\)/g, "");
-	}],
-	date: ["//div[@id='main_text']", function(text) {
+	artist: ["//h1/a", text => text.replace(/\(.*?\)/g, "")],
+	date: ["//div[@id='main_text']", text => {
 		if ( /.*(1[678]\d{2})/.test(text) ) {
 			return RegExp.$1;
 		}
@@ -12,6 +10,4 @@ exports.extract = {
 	"source_images[]": "//a[contains(@class,'zoom')]/@href"
 };
 
-exports.genURL = function( id ) {
-	return "http://www.japaneseprints-london.com/" + id;
-};
+exports.genURL = id => "http://www.japaneseprints-london.com/" + id;

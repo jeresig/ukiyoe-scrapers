@@ -4,6 +4,4 @@ exports.extract = {
 	source_image: "//img[contains(@src, '1024')]/@src"
 };
 
-exports.genURL = function( id ) {
-	return "http://webarchives.tnm.jp/imgsearch/show/" + id;
-};
+exports.genURL = id => "http://webarchives.tnm.jp/imgsearch/show/" + id;

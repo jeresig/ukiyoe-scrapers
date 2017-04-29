@@ -1,5 +1,5 @@
-module.exports = function(site) {
-    var correctDate = function(data) {
+module.exports = site => {
+    var correctDate = data => {
         if (data.active) {
             data.activeStart = (data.start - 0) || null;
             data.activeEnd = (data.end - 0) || null;
@@ -32,11 +32,11 @@ module.exports = function(site) {
                 extract: {
                     name: "//div[@id='mw-content-text']//p[b][1]/b[1]",
 
-                    kanji: ["//*[@class='interwiki-ja']/a/@title || //*[@class='t_nihongo_kanji'][1]", function(kanji, data) {
+                    kanji: ["//*[@class='interwiki-ja']/a/@title || //*[@class='t_nihongo_kanji'][1]", (kanji, data) => {
                         data.name += " " + kanji;
                     }],
 
-                    bio: ["//div[@id='mw-content-text']/p", function(bio, origData) {
+                    bio: ["//div[@id='mw-content-text']/p", (bio, origData) => {
                         var data = {};
                         var dates = bio;
                         var origDate = dates;
@@ -104,7 +104,7 @@ module.exports = function(site) {
                             .replace(/\?\)/g, ")");
                     }],
 
-                    url: function(data) {
+                    url(data) {
                         if (!data.url && data.savedPage) {
                             if (/([^\/]+).html/.test(data.savedPage)) {
                                 data._id = RegExp.$1;
@@ -117,7 +117,7 @@ module.exports = function(site) {
             }
         ],
 
-        accept: function(data) {
+        accept(data) {
             return !!data.name;
         }
     };

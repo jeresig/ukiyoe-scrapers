@@ -1,7 +1,7 @@
 var ukiyoe = require("ukiyoe-models");
 
-ukiyoe.init(function() {
-    require("stack-scraper").cli(function(args, stackScraper) {
+ukiyoe.init(() => {
+    require("stack-scraper").cli((args, stackScraper) => {
         if (!ukiyoe.models[args.type]) {
             console.error("Error: Invalid model type:", args.type);
             process.exit(1);
@@ -22,7 +22,7 @@ ukiyoe.init(function() {
                 } : {},
             romajiName: ukiyoe.romajiName
         };
-    }, function(err) {
+    }, err => {
         if (err) {
             console.error(err);
         } else {

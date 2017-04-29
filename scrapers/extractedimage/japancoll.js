@@ -7,12 +7,10 @@ exports.extract = {
 	source_image: '//a[img][contains(@href, "jpg")]/@href'
 };
 
-exports.accept = function( data ) {
+exports.accept = data => {
 	var pass = !/\S/.test(data.medium) || /Print/i.test(data.medium);
 	delete data.medium;
 	return pass;
 };
 
-exports.genURL = function( id ) {
-	return "http://www.japancollection.com/japanese-prints-uview/print.php?pid=" + id;
-};
+exports.genURL = id => "http://www.japancollection.com/japanese-prints-uview/print.php?pid=" + id;

@@ -1,5 +1,5 @@
-module.exports = function(site) {
-    var correctDate = function(data) {
+module.exports = site => {
+    var correctDate = data => {
         if (data.active) {
             data.activeStart = (data.start - 0) || null;
             data.activeEnd = (data.end - 0) || null;
@@ -30,7 +30,7 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: ["//span[@id='sites-page-title']", function(name, origData) {
+                    name: ["//span[@id='sites-page-title']", (name, origData) => {
                         var data = {};
                         name = name.replace(/\n/g, " ");
 
@@ -128,7 +128,7 @@ module.exports = function(site) {
                         return name;
                     }],
 
-                    bio: ["//div[contains(@class, 'sites-tile-name-content-1')]", function(bio, data) {
+                    bio: ["//div[contains(@class, 'sites-tile-name-content-1')]", (bio, data) => {
                         var kanji = {};
                         site.romajiName.extractKanji(bio, kanji);
                         if (kanji.kanji) {
@@ -138,7 +138,7 @@ module.exports = function(site) {
                         return bio;
                     }],
 
-                    url: function(data) {
+                    url(data) {
                         if (!data.url && data.savedPage) {
                             if (/([^\/]+).html/.test(data.savedPage)) {
                                 data._id = RegExp.$1;
@@ -151,7 +151,7 @@ module.exports = function(site) {
             }
         ],
 
-        accept: function(data) {
+        accept(data) {
             return !!data.name;
         }
     };

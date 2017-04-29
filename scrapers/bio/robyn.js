@@ -1,5 +1,5 @@
-module.exports = function(site) {
-    var correctDate = function(data) {
+module.exports = site => {
+    var correctDate = data => {
         if (data.active) {
             data.activeStart = (data.start - 0) || null;
             data.activeEnd = (data.end - 0) || null;
@@ -30,13 +30,11 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: ["//font[@size='5'][1]", function(name, data) {
-                        return name
-                            .replace(/\s*\|.*$/, "")
-                            .replace(/\([^\)]+\)/g, "");
-                    }],
+                    name: ["//font[@size='5'][1]", (name, data) => name
+                        .replace(/\s*\|.*$/, "")
+                        .replace(/\([^\)]+\)/g, "")],
 
-                    dates: ["//font[@size='5']/following-sibling::font[@size='2']", function(dates, origData) {
+                    dates: ["//font[@size='5']/following-sibling::font[@size='2']", (dates, origData) => {
                         var data = {};
                         var origDate = dates;
                         var parts = dates.replace(/\(\s*|\s*\)/g, "").split(/\s*-\s*/);
@@ -93,12 +91,12 @@ module.exports = function(site) {
                         }
                     }],
 
-                    bio: ["//td/font[@size='2'][count(preceding-sibling::*)=0]", function(bio, data) {
+                    bio: ["//td/font[@size='2'][count(preceding-sibling::*)=0]", (bio, data) => {
                         bio = bio.replace(/\n/g, " ");
                         return bio;
                     }],
 
-                    url: function(data) {
+                    url(data) {
                         if (!data.url && data.savedPage) {
                             if (/(\d+).html/.test(data.savedPage)) {
                                 data._id = RegExp.$1;
@@ -111,7 +109,7 @@ module.exports = function(site) {
             }
         ],
 
-        accept: function(data) {
+        accept(data) {
             return !!data.name &&
                 !/Artwork Available/i.test(data.name);
         }

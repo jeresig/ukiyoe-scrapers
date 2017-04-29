@@ -6,7 +6,7 @@ exports.extract = {
 	source_image: "//img[@id='screen']/@src"
 };
 
-exports.genURL = function( id, data ) {
+exports.genURL = (id, data) => {
 	if ( data.description && /([\d.]+)$/.test( data.description ) ) {
 		return "http://gallery.famsf.org/gallery/artworkSearch.htm?accessionNumber=" + RegExp.$1;
 	}
