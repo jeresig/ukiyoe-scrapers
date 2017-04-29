@@ -1,5 +1,5 @@
-module.exports = function(site) {
-    var correctDate = function(data) {
+module.exports = site => {
+    var correctDate = data => {
         if (data.active) {
             data.activeStart = (data.start - 0) || null;
             data.activeEnd = (data.end - 0) || null;
@@ -31,7 +31,7 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: ["//p[@class='title'][contains(text(), 'Biography ')]", function(name, origData) {
+                    name: ["//p[@class='title'][contains(text(), 'Biography ')]", (name, origData) => {
                         var data = {};
                         /Biography (.*?) \((.*?)\)$/.test(name);
                         name = RegExp.$1;
@@ -94,13 +94,13 @@ module.exports = function(site) {
                         return name;
                     }],
 
-                    bio: ["//p[@class='title'][contains(text(), 'Biography ')]/following-sibling::p", function(bio, data) {
+                    bio: ["//p[@class='title'][contains(text(), 'Biography ')]/following-sibling::p", (bio, data) => {
                         bio = bio.split(/\n\n\n/)[0].replace(/\n/g, " ");
                         return bio !== "Biography unavailable." ?
                             bio : null;
                     }],
 
-                    url: function(data) {
+                    url(data) {
                         if (!data.url && data.savedPage) {
                             if (/(\d+).html/.test(data.savedPage)) {
                                 data._id = RegExp.$1;
@@ -113,7 +113,7 @@ module.exports = function(site) {
             }
         ],
 
-        accept: function(data) {
+        accept(data) {
             return !!data.name;
         }
     };

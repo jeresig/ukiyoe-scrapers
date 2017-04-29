@@ -1,7 +1,7 @@
 var hepburn = require("hepburn");
 
-module.exports = function(site) {
-    var correctDate = function(data) {
+module.exports = site => {
+    var correctDate = data => {
         if (data.active) {
             data.activeStart = (data.start - 0) || null;
             data.activeEnd = (data.end - 0) || null;
@@ -32,12 +32,12 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: ["//div[@id='mw-content-text']//p[b][1]/b[1]", function(val, data) {
+                    name: ["//div[@id='mw-content-text']//p[b][1]/b[1]", (val, data) => {
                         data._id = val;
                         return val;
                     }],
 
-                    dates: ["//div[@id='mw-content-text']/p[1]", function(bio, origData) {
+                    dates: ["//div[@id='mw-content-text']/p[1]", (bio, origData) => {
                         if (/[\（\(]\s*([\u3041-\u3096\u30A0-\u30FF ]+)/.test(bio)) {
                             origData.name += " " + hepburn.fromKana(RegExp.$1);
                         }
@@ -94,12 +94,10 @@ module.exports = function(site) {
                         }
                     }],
 
-                    bio: ["//div[@id='mw-content-text']/p", function(bio, origData) {
-                        return bio.replace(/\[\d+\]/g, "")
-                            .replace(/\?\)/g, ")");
-                    }],
+                    bio: ["//div[@id='mw-content-text']/p", (bio, origData) => bio.replace(/\[\d+\]/g, "")
+                        .replace(/\?\)/g, ")")],
 
-                    url: function(data) {
+                    url(data) {
                         if (!data.url && data.savedPage) {
                             if (/([^\/]+).html/.test(data.savedPage)) {
                                 //data._id = decodeURIComponent(RegExp.$1);
@@ -112,7 +110,7 @@ module.exports = function(site) {
             }
         ],
 
-        accept: function(data) {
+        accept(data) {
             return !!data.name;
         }
     };

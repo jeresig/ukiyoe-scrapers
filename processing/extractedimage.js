@@ -2,14 +2,14 @@ var url = require("url");
 var _ = require("lodash");
 var async = require("async");
 
-module.exports = function(ukiyoe, stackScraper) {
+module.exports = (ukiyoe, stackScraper) => {
     var nameUtils = require("./names.js")(ukiyoe);
     var dateUtils = require("./dates.js")(ukiyoe);
 
-    var saveImage = function(baseURL, imageURL, s3Save, callback) {
+    var saveImage = (baseURL, imageURL, s3Save, callback) => {
         imageURL = url.resolve(baseURL, imageURL);
 
-        var resultHandler = function(err, md5) {
+        var resultHandler = (err, md5) => {
             if (stackScraper.options.debug) {
                 if (err) {
                     console.error("Error processing image.");
@@ -19,7 +19,7 @@ module.exports = function(ukiyoe, stackScraper) {
             }
 
             callback(err, {
-                imageURL: imageURL,
+                imageURL,
                 imageName: md5,
                 _id: stackScraper.options.source + "/" + md5
             });
@@ -44,12 +44,12 @@ module.exports = function(ukiyoe, stackScraper) {
     };
 
     return {
-        _id: function(data, scraper, callback) {
+        _id(data, scraper, callback) {
             data._id = stackScraper.options.source + "/" + data._id;
             callback(null, [data]);
         },
 
-        price: function(data, scraper, callback) {
+        price(data, scraper, callback) {
             if (data.sold === undefined) {
                 data.forSale = true;
                 data.sold = false;
@@ -65,11 +65,11 @@ module.exports = function(ukiyoe, stackScraper) {
         carvers: nameUtils.correctNames("carvers"),
         depicted: nameUtils.correctNames("depicted"),
 
-        images: function(data, scraper, callback) {
-            async.mapLimit(data.images, 1, function(image, callback) {
+        images(data, scraper, callback) {
+            async.mapLimit(data.images, 1, (image, callback) => {
                 saveImage(data.url, image, !stackScraper.options.noSave,
                     callback);
-            }, function(err, imageDatas) {
+            }, (err, imageDatas) => {
                 if (err) {
                     return callback(err);
                 }
@@ -79,7 +79,7 @@ module.exports = function(ukiyoe, stackScraper) {
                 var related = _.pluck(imageDatas, "imageName");
                 var source = stackScraper.options.source;
 
-                callback(null, imageDatas.map(function(imageData) {
+                callback(null, imageDatas.map(imageData => {
                     var clone = _.clone(data);
 
                     for (var prop in imageData) {
@@ -88,7 +88,7 @@ module.exports = function(ukiyoe, stackScraper) {
                         }
                     }
 
-                    var getID = function(imageName) {
+                    var getID = imageName => {
                         if (clone._ids) {
                             var pos = related.indexOf(imageName);
                             return pos > -1 ?

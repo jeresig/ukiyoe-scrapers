@@ -1,5 +1,5 @@
-module.exports = function(site) {
-    var correctDate = function(data) {
+module.exports = site => {
+    var correctDate = data => {
         if (data.active) {
             data.activeStart = (data.start - 0) || null;
             data.activeEnd = (data.end - 0) || null;
@@ -30,21 +30,19 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: ["//tr[contains(./td/div/span,'Biography')]/following-sibling::tr[2]//span", function(name, data) {
+                    name: ["//tr[contains(./td/div/span,'Biography')]/following-sibling::tr[2]//span", (name, data) => {
                         data.locations = ["Osaka"];
                         return name;
                     }],
 
-                    "aliases": ["//td[contains(./div/span,'Names:')]/following-sibling::td", function(names, data) {
+                    "aliases": ["//td[contains(./div/span,'Names:')]/following-sibling::td", (names, data) => {
                         var aliases = names.replace(/\n/g, " ")
                             .replace(/\(.*?\);/g, ";")
                             .split(/\s*(?:;|\band\b|\balso\b)\s*/)
-                            .map(function(name) {
-                                return name
-                                    .replace(/ \[.*/, "")
-                                    .replace(/ \(.*/, "")
-                                    .replace(/[.*]/g, "").trim();
-                            });
+                            .map(name => name
+                            .replace(/ \[.*/, "")
+                            .replace(/ \(.*/, "")
+                            .replace(/[.*]/g, "").trim());
 
                         if (/\s*\((.*)\)/.test(data.name)) {
                             aliases.push(RegExp.$1);
@@ -54,11 +52,11 @@ module.exports = function(site) {
                         return aliases;
                     }],
 
-                    dates: ["//td[contains(./div/span,'Dates:')]/following-sibling::td", function(dates, origData) {
+                    dates: ["//td[contains(./div/span,'Dates:')]/following-sibling::td", (dates, origData) => {
                         var data = {};
                         var origDate = dates;
 
-                        dates.split(/;\s*/).forEach(function(date) {
+                        dates.split(/;\s*/).forEach(date => {
                             var parts = date.split(/\s*-\s*/);
                             var start = parts[0];
                             var end = parts[1];
@@ -119,7 +117,7 @@ module.exports = function(site) {
 
                     bio: "//p[contains(.,'Comments')]/following-sibling::p",
 
-                    url: function(data) {
+                    url(data) {
                         if (!data.url && data.savedPage) {
                             if (/([^\/]+).html/.test(data.savedPage)) {
                                 data._id = RegExp.$1;
@@ -132,7 +130,7 @@ module.exports = function(site) {
             }
         ],
 
-        accept: function(data) {
+        accept(data) {
             return !!data.name;
         }
     };

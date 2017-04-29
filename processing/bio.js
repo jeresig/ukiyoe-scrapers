@@ -1,16 +1,16 @@
 var crypto = require("crypto");
 
-module.exports = function(ukiyoe, stackScraper) {
+module.exports = (ukiyoe, stackScraper) => {
     var nameUtils = require("./names.js")(ukiyoe);
     var dateUtils = require("./dates.js")(ukiyoe);
 
     return {
-        _id: function(data, scraper, callback) {
+        _id(data, scraper, callback) {
             data._id = stackScraper.options.source + "/" + data._id;
-            process.nextTick(function() { callback(null, data); });
+            process.nextTick(() => { callback(null, data); });
         },
-        name: function(data, scraper, callback) {
-            nameUtils.correctNames("name")(data, scraper, function(err, data) {
+        name(data, scraper, callback) {
+            nameUtils.correctNames("name")(data, scraper, (err, data) => {
                 if (data && !data._id) {
                     // Set the ID
                     var hash = crypto.createHash("sha1");

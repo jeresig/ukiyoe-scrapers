@@ -1,5 +1,5 @@
-module.exports = function(site) {
-    var correctDate = done = function(origDates, origData) {
+module.exports = site => {
+    var correctDate = done = (origDates, origData) => {
         var data = {dates: origDates};
         var origDate = data.dates;
 
@@ -231,13 +231,11 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: ['//h2[@class="caption2"]', function(name, data) {
-                        return name.replace(/&nbsp;/g, " ")
-                            .replace(/\n/g, " ").split(/\s*-\s*/)[0]
-                            .replace(/\(.*?\)/, "");
-                    }],
+                    name: ['//h2[@class="caption2"]', (name, data) => name.replace(/&nbsp;/g, " ")
+                        .replace(/\n/g, " ").split(/\s*-\s*/)[0]
+                        .replace(/\(.*?\)/, "")],
 
-                    dates: ['//h2[@class="caption2"]', function(name, data) {
+                    dates: ['//h2[@class="caption2"]', (name, data) => {
                         var dates = name.replace(/&nbsp;/g, " ")
                             .replace(/\n/g, " ").split(/\s*-\s*/)
                             .slice(1).join("-");
@@ -246,7 +244,7 @@ module.exports = function(site) {
 
                     bio: '//div[@class="left-image"]/following-sibling::p[1][a]/text()',
 
-                    url: function(data) {
+                    url(data) {
                         if (!data.url && data.savedPage) {
                             if (/(\d+).html/.test(data.savedPage)) {
                                 data._id = RegExp.$1;
@@ -259,7 +257,7 @@ module.exports = function(site) {
             }
         ],
 
-        accept: function(data) {
+        accept(data) {
             return !!data.name && !/Chin/i.test(data.bio) &&
                 !/[xX]/.test(data.name);
         }

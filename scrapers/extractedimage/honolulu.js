@@ -6,12 +6,8 @@ exports.extract = {
 	source_image: "#art_detail_left//img/@src",
 };
 
-exports.genURL = function( id ) {
-	return "http://www.honoluluacademy.org/art/" + id;
-};
+exports.genURL = id => "http://www.honoluluacademy.org/art/" + id;
 
-exports.getImage = function( name ) {
-	return /image\/(\d+)/.exec( name ) ?
-		RegExp.$1 + ".jpg" :
-		"";
-};
+exports.getImage = name => /image\/(\d+)/.exec( name ) ?
+    RegExp.$1 + ".jpg" :
+    "";

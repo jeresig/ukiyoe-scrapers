@@ -1,5 +1,5 @@
-module.exports = function(site) {
-    var correctDate = function(data) {
+module.exports = site => {
+    var correctDate = data => {
         if (data.active) {
             data.activeStart = (data.start - 0) || null;
             data.activeEnd = (data.end - 0) || null;
@@ -30,7 +30,7 @@ module.exports = function(site) {
         scrape: [
             {
                 extract: {
-                    name: ['//h2[@class="subtitle"]', function(name, origData) {
+                    name: ['//h2[@class="subtitle"]', (name, origData) => {
                         var data = {};
                         var origName = name = name.replace(/\s*\|.*$/, "");
 
@@ -95,12 +95,12 @@ module.exports = function(site) {
                         return name;
                     }],
 
-                    bio: ['//div[@class="bio"]', function(bio, data) {
+                    bio: ['//div[@class="bio"]', (bio, data) => {
                         data.aliases = [];
 
                         bio = bio.replace(/\n/g, " ");
 
-                        bio = bio.replace(/(?:N\.|F\.N\.|Studio name|Given name|Go:):?\s+([^.]+)\.\s*/g, function(all, aliases) {
+                        bio = bio.replace(/(?:N\.|F\.N\.|Studio name|Given name|Go:):?\s+([^.]+)\.\s*/g, (all, aliases) => {
                             aliases = aliases.replace(/\s*\(.*?\)/g, "");
                             data.aliases = data.aliases.concat(aliases.split(/,\s*/));
                             return "";
@@ -126,7 +126,7 @@ module.exports = function(site) {
                         return bio;
                     }],
 
-                    url: function(data) {
+                    url(data) {
                         if (!data.url && data.savedPage) {
                             if (/(\d+).html/.test(data.savedPage)) {
                                 data._id = RegExp.$1;
@@ -139,7 +139,7 @@ module.exports = function(site) {
             }
         ],
 
-        accept: function(data) {
+        accept(data) {
             return !!data.name;
         }
     };

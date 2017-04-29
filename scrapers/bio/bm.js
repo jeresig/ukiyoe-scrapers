@@ -1,5 +1,5 @@
-module.exports = function(site) {
-    var correctDate = function(data) {
+module.exports = site => {
+    var correctDate = data => {
         if (data.active) {
             data.activeStart = (data.start - 0) || null;
             data.activeEnd = (data.end - 0) || null;
@@ -32,7 +32,7 @@ module.exports = function(site) {
                 extract: {
                     "name": '//span[@class="collectionBiographicName"]',
 
-                    dates: ['//span[@class="collectionBiographicName"]/following-sibling::text()', function(dates, ret) {
+                    dates: ['//span[@class="collectionBiographicName"]/following-sibling::text()', (dates, ret) => {
                         if (!/Japanese/i.test(dates) || !/printmaker/i.test(dates)) {
                             return false;
                         }
@@ -188,12 +188,8 @@ module.exports = function(site) {
 
                     bio: '//h3[contains(text(),"Biography")]/following-sibling::p[1]',
 
-                    aliases: ['//h3[contains(text(),"Also Known As")]/following-sibling::p[1]', function(aliases, data) {
-                        var names = aliases.replace(/\n/g, " ").split(/;\s*/).map(function(name) {
-                            return name.replace(/ \(.*?\)/, "").split(/,\s*/).reverse().join(" ");
-                        }).filter(function(name) {
-                            return name && name !== data.name;
-                        });
+                    aliases: ['//h3[contains(text(),"Also Known As")]/following-sibling::p[1]', (aliases, data) => {
+                        var names = aliases.replace(/\n/g, " ").split(/;\s*/).map(name => name.replace(/ \(.*?\)/, "").split(/,\s*/).reverse().join(" ")).filter(name => name && name !== data.name);
 
                         // Merge in standalone kanji names
                         for (var i = aliases.length - 1; i > 0; i--) {
@@ -203,12 +199,10 @@ module.exports = function(site) {
                             }
                         }
 
-                        return aliases.filter(function(name) {
-                            return !!name.trim();
-                        })
+                        return aliases.filter(name => !!name.trim());
                     }],
 
-                    url: function(data) {
+                    url(data) {
                         if (!data.url && data.savedPage) {
                             if (/(\d+).html/.test(data.savedPage)) {
                                 data._id = RegExp.$1;
@@ -221,7 +215,7 @@ module.exports = function(site) {
             }
         ],
 
-        accept: function(data) {
+        accept(data) {
             var hasDate = data.dates;
             delete data.dates;
             if (data.aliases && data.aliases.length === 0) {

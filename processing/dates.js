@@ -1,8 +1,8 @@
 var _ = require("lodash");
 var yr = require("yearrange");
 
-module.exports = function(ukiyoe) {
-    var validDate = function(date) {
+module.exports = ukiyoe => {
+    var validDate = date => {
         var valid = false;
 
         for (var prop in date) {
@@ -15,21 +15,19 @@ module.exports = function(ukiyoe) {
         return valid ? date : undefined;
     };
 
-    var correctDates = function(key) {
-        return function(data, scraper, callback) {
-            if (_.isArray(data[key])) {
-                data[key].forEach(function(date, i) {
-                    data[key][i] = validDate(yr.parse(date));
-                });
-            } else if (typeof data[key] === "string") {
-                data[key] = validDate(yr.parse(data[key]));
-            }
+    var correctDates = key => (data, scraper, callback) => {
+        if (_.isArray(data[key])) {
+            data[key].forEach((date, i) => {
+                data[key][i] = validDate(yr.parse(date));
+            });
+        } else if (typeof data[key] === "string") {
+            data[key] = validDate(yr.parse(data[key]));
+        }
 
-            process.nextTick(function() { callback(null, data); });
-        };
+        process.nextTick(() => { callback(null, data); });
     };
 
     return {
-        correctDates: correctDates
+        correctDates
     };
 };

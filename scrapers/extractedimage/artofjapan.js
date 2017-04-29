@@ -2,7 +2,7 @@ var column = "//td[contains(.//text(),'%s')]/following-sibling::td[2]/span/text(
 
 // http://www.theartofjapan.com/ArtDetail.asp?Inv=rd0110024
 
-module.exports = function(options, casper) {
+module.exports = (options, casper) => {
     var sprintf = casper.format;
 
     return {
@@ -24,14 +24,12 @@ module.exports = function(options, casper) {
                     dimensions: sprintf(column, "Dimensions"),
                     condition: sprintf(column, "Condition"),
                     price: sprintf(column, "Price"),
-                    sold: ["//font[contains(text(),'SOLD')]", function() {
-                        return true
-                    }],
-                    url: function(data) {
+                    sold: ["//font[contains(text(),'SOLD')]", () => true],
+                    url(data) {
                         // Generate a clean URL
                         return "http://www.theartofjapan.com/ArtDetail.asp?Inv=" + data._id;
                     },
-                    images: function(data) {
+                    images(data) {
                         return ["http://www.theartofjapan.com/Art_Images/Large/" + data._id + ".jpg"];
                     }
                 }

@@ -1,5 +1,5 @@
-module.exports = function(site) {
-    var correctDate = function(data) {
+module.exports = site => {
+    var correctDate = data => {
         if (data.active) {
             data.activeStart = (data.start - 0) || null;
             data.activeEnd = (data.end - 0) || null;
@@ -35,7 +35,7 @@ module.exports = function(site) {
             {
                 root: "//tr[./td[@width='30%']]",
                 extract: {
-                    name: ["./td[@width='30%']", function(name, data) {
+                    name: ["./td[@width='30%']", (name, data) => {
                         name = name.replace(/\n/g, " ")
                             .replace(/\s*\(.*/, "");
 
@@ -44,7 +44,7 @@ module.exports = function(site) {
                         return name;
                     }],
 
-                    dates: ["./td[@width='70%']", function(dates, origData) {
+                    dates: ["./td[@width='70%']", (dates, origData) => {
                         var data = {};
                         var origDate = dates = dates.replace(/\n/g, " ").replace(/^\(|\)$/g, "");
                         var last = dates;
@@ -128,14 +128,12 @@ module.exports = function(site) {
                         }
                     }],
 
-                    url: [".//a/@href", function(url) {
-                        return "http://www.japanesegallery.co.uk/" + url;
-                    }]
+                    url: [".//a/@href", url => "http://www.japanesegallery.co.uk/" + url]
                 }
             }
         ],
 
-        accept: function(data) {
+        accept(data) {
             return !!data.name;
         }
     };
