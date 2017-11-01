@@ -16,12 +16,12 @@
     "url": "https://github.com/jeresig/ukiyoe-scrapers/issues"
   },
   "dependencies": {
-    "stack-scraper": "~0.1.0",
-    "ukiyoe-models": "~0.0.1",
-    "mongoose": "~3.8.7",
-    "lodash": "~2.4.1",
-    "async": "^0.2.10",
-    "yearrange": "0.0.2",
-    "hepburn": "^0.5.2"
+    "stack-scraper": "0.1.1",
+    "ukiyoe-models": "0.0.7",
+    "mongoose": "4.12.5",
+    "lodash": "4.17.4",
+    "async": "2.5.0",
+    "yearrange": "0.0.5",
+    "hepburn": "1.0.0"
   }
 }
