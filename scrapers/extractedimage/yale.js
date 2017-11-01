@@ -9,14 +9,21 @@ module.exports = function(options, casper) {
             {
                 extract: {
                     title: "//title",
-                    date: "//div[contains(@class,'field-name-field-dated')]",
-                    artists: "//div[contains(@class,'field-name-object-artists')]",
+                    dateCreated: "//div[contains(@class,'field-name-field-dated')]",
+                    artists: ["//div[contains(@class,'field-name-object-artists')]", function(name) {
+                        return name.replace(/Artist:\s*/, "")
+                            .replace(/, Japanese.*$/, "");
+                    }],
                     dimensions: "//div[contains(@class,'field-name-field-dimensions')]",
-                    "images[]": "//a[@class='download']/@href",
+                    "images[]": "//a[@class='download'][contains(text(),'presentation')]/@href",
                     "_ids[]": function(data) {
                         if (data.images) {
                             return data.images.map(function(val) {
-                                return /objectid=(\d+)/.exec(val)[1];
+                                // Ugh - two different URL schemes!
+                                if (/objectid=(\d+)/.exec(val) ||
+                                    /content\/id\/([^\/]+)/.exec(val)) {
+                                    return RegExp.$1;
+                                }
                             });
                         }
                     }

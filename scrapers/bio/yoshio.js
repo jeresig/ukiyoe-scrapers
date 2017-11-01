@@ -39,6 +39,8 @@ module.exports = function(options) {
                         // Don't return anything if there's no kana name
                     }],
 
+                    aliases: "//td[@width='480']/font[@color='red']",
+
                     life: "(//td[@width='480']/font[@color='blue'])[2]",
 
                     url: function(data) {
@@ -58,7 +60,11 @@ module.exports = function(options) {
         ],
 
         accept: function(data) {
-            return !!data.name && !!data.name.name;
+            return !!data.name && !!data.name.name &&
+                // Reject artists that are just an alias for another
+                !data.aliases &&
+                // Reject artists with an explict unknown date
+                (!data.life || !/〔未詳〕/.test(data.life));
         }
     };
 };

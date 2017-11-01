@@ -189,11 +189,23 @@ module.exports = function(site) {
                     bio: '//h3[contains(text(),"Biography")]/following-sibling::p[1]',
 
                     aliases: ['//h3[contains(text(),"Also Known As")]/following-sibling::p[1]', function(aliases, data) {
-                        return aliases.replace(/\n/g, " ").split(/;\s*/).map(function(name) {
+                        var names = aliases.replace(/\n/g, " ").split(/;\s*/).map(function(name) {
                             return name.replace(/ \(.*?\)/, "").split(/,\s*/).reverse().join(" ");
                         }).filter(function(name) {
-                            return name !== data.name;
+                            return name && name !== data.name;
                         });
+
+                        // Merge in standalone kanji names
+                        for (var i = aliases.length - 1; i > 0; i--) {
+                            if (!/[a-z]/i.test(aliases[i])) {
+                                aliases[i - 1] += " " + aliases[i];
+                                aliases[i] = "";
+                            }
+                        }
+
+                        return aliases.filter(function(name) {
+                            return !!name.trim();
+                        })
                     }],
 
                     url: function(data) {
