@@ -14,12 +14,9 @@ ukiyoe.init(function() {
             logModel: ukiyoe.models.scrapelog,
             postProcessors: require("./processing/" + args.type)(
                 ukiyoe, stackScraper),
-            directories: args.type === "extractedimage" ?
-                {
-                    imagesDir: "./images/",
-                    thumbsDir: "./thumbs/",
-                    scaledDir: "./scaled/"
-                } : {},
+            directories: args.type === "extractedimage"
+                ? {imagesDir: "./images/"}
+                : {},
             romajiName: ukiyoe.romajiName
         };
     }, function(err) {

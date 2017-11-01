@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "stack-scraper": "0.1.1",
-    "ukiyoe-models": "0.0.11",
+    "ukiyoe-models": "0.0.12",
     "mongoose": "4.12.5",
     "lodash": "4.17.4",
     "async": "2.5.0",
